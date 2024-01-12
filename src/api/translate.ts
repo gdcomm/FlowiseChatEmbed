@@ -26,11 +26,6 @@ async function translateWithGPT3(from: string, to: string, text: string): Promis
   const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
   const apiKey = await getApiKey();
 
-  if (!apiKey) {
-    console.error('API key not found in the database');
-    return 'API key not available';
-  }
-
   try {
     const response = await axios.post(
       apiUrl,
