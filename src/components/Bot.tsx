@@ -146,10 +146,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
-    let test: string
+    let test: string;
     if (detectKorean(value)) {
-      setIsKorean(true)
-      test = await translateWithGPT3('Korean', 'English', value)
+      setIsKorean(true);
+      test = await translateWithGPT3('Korean', 'English', value);
     }
 
     // Send user question and history to API
