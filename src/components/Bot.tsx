@@ -70,7 +70,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [isChatFlowAvailableToStream, setIsChatFlowAvailableToStream] = createSignal(false);
   const [chatId, setChatId] = createSignal(uuidv4());
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
-  const [key, setKey] = createSignal('');
   const [isKorean, setIsKorean] = createSignal(false);
 
   onMount(() => {
