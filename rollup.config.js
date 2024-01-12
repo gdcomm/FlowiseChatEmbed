@@ -14,6 +14,7 @@ import { uglify } from 'rollup-plugin-uglify';
 const extensions = ['.ts', '.tsx'];
 
 const indexConfig = {
+  external: ['pg'],
   plugins: [
     resolve({ extensions, browser: true }),
     commonjs(),
@@ -55,7 +56,6 @@ const configs = [
       file: 'dist/web.js',
       format: 'es',
     },
-    external: ['pg']
   },
 ];
 
