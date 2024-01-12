@@ -154,7 +154,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     if (detectKorean(value)) {
       setIsKorean(true);
-      setKey(await getApiKey())
+      setKey(await getApiKey());
     }
 
     // Send user question and history to API
