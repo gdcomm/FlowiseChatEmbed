@@ -12,6 +12,8 @@ import socketIOClient from 'socket.io-client';
 import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
 import { DeleteButton } from '@/components/SendButton';
+import { detectKorean } from '@/utils/detectLanguage';
+import translateWithGPT3 from '@/api/translate';
 
 type messageType = 'apiMessage' | 'userMessage' | 'usermessagewaiting';
 
@@ -68,6 +70,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [isChatFlowAvailableToStream, setIsChatFlowAvailableToStream] = createSignal(false);
   const [chatId, setChatId] = createSignal(uuidv4());
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
+  const [key, setKey] = createSignal('');
+  const [isKorean, setIsKorean] = createSignal(false);
 
   onMount(() => {
     if (!bottomSpacer) return;
@@ -116,7 +120,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   // Handle errors
-  const handleError = (message = 'Oops! There seems to be an error. Please try again.') => {
+  const handleError = (message = isKorean() ? '잠시 후 다시 시도 해주시기 바랍니다.' : 'Oops! There seems to be an error. Please try again.') => {
     setMessages((prevMessages) => {
       const messages: MessageType[] = [...prevMessages, { message, type: 'apiMessage' }];
       addChatMessage(messages);
@@ -142,12 +146,18 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
+    let test: string
+    if (detectKorean(value)) {
+      setIsKorean(true)
+      test = await translateWithGPT3('Korean', 'English', value)
+    }
+
     // Send user question and history to API
     const welcomeMessage = props.welcomeMessage ?? defaultWelcomeMessage;
     const messageList = messages().filter((msg) => msg.message !== welcomeMessage);
 
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage' }];
+      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage', test: test }];
       addChatMessage(messages);
       return messages;
     });
@@ -175,6 +185,13 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         if (data.text) text = data.text;
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
+
+        // if (isKorean()) {
+        //   text = await translateWithGPT3('English', 'Korean', text);
+        // }
+        /**
+         * TODO. eliminate
+         */
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [

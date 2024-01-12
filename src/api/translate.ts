@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const first = 'sk-fl5yuX1Kbg3oG5CNBwt'
-const second = 'WT3BlbkFJElTwiaQjIPFwC'
-const third = 'VyE0wFS'
+const first = 'sk-fl5yuX1Kbg3oG5CNBwt';
+const second = 'WT3BlbkFJElTwiaQjIPFwC';
+const third = 'VyE0wFS';
 
 async function translateWithGPT3(from: string, to: string, text: string): Promise<string> {
   const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
-  const apiKey = first + second + third
+  const apiKey = first + second + third;
 
   try {
     const response = await axios.post(
