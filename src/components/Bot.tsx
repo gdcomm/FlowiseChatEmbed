@@ -12,8 +12,6 @@ import socketIOClient from 'socket.io-client';
 import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
 import { DeleteButton } from '@/components/SendButton';
-import { detectKorean } from '@/utils/detectLanguage';
-import { getApiKey } from '@/api/translate';
 
 type messageType = 'apiMessage' | 'userMessage' | 'usermessagewaiting';
 
@@ -22,7 +20,7 @@ export type MessageType = {
   type: messageType;
   sourceDocuments?: any;
   fileAnnotations?: any;
-  key?: string;
+  test?: string;
 };
 
 export type BotProps = {
@@ -70,8 +68,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [isChatFlowAvailableToStream, setIsChatFlowAvailableToStream] = createSignal(false);
   const [chatId, setChatId] = createSignal(uuidv4());
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
-  const [key, setKey] = createSignal('');
-  const [isKorean, setIsKorean] = createSignal(false);
 
   onMount(() => {
     if (!bottomSpacer) return;
@@ -90,13 +86,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
    * Add each chat message into localStorage
    */
   const addChatMessage = (allMessage: MessageType[]) => {
-    localStorage.setItem(
-      `${props.chatflowid}_EXTERNAL`,
-      JSON.stringify({
-        chatId: chatId(),
-        chatHistory: allMessage,
-      }),
-    );
+    localStorage.setItem(`${props.chatflowid}_EXTERNAL`, JSON.stringify({ chatId: chatId(), chatHistory: allMessage }));
   };
 
   const updateLastMessage = (text: string) => {
@@ -126,7 +116,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   // Handle errors
-  const handleError = (message = isKorean() ? '잠시 후 다시 시도 해주시기 바랍니다.' : 'Oops! There seems to be an error. Please try again.') => {
+  const handleError = (message = 'Oops! There seems to be an error. Please try again.') => {
     setMessages((prevMessages) => {
       const messages: MessageType[] = [...prevMessages, { message, type: 'apiMessage' }];
       addChatMessage(messages);
@@ -152,17 +142,12 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
-    if (detectKorean(value)) {
-      setIsKorean(true);
-      setKey(await getApiKey());
-    }
-
     // Send user question and history to API
     const welcomeMessage = props.welcomeMessage ?? defaultWelcomeMessage;
     const messageList = messages().filter((msg) => msg.message !== welcomeMessage);
 
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage', key: key() }];
+      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage' }];
       addChatMessage(messages);
       return messages;
     });
@@ -191,22 +176,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        // if (isKorean()) {
-        //   text = await translateWithGPT3('English', 'Korean', text);
-        // }
-        /**
-         * TODO. eliminate
-         */
-
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
-            {
-              message: text,
-              sourceDocuments: data?.sourceDocuments,
-              fileAnnotations: data?.fileAnnotations,
-              type: 'apiMessage',
-            },
+            { message: text, sourceDocuments: data?.sourceDocuments, fileAnnotations: data?.fileAnnotations, type: 'apiMessage' },
           ];
           addChatMessage(messages);
           return messages;
@@ -464,15 +437,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         </div>
         <Show when={messages().length === 1}>
           <Show when={starterPrompts().length > 0}>
-            <div
-              style={{
-                display: 'flex',
-                'flex-direction': 'row',
-                padding: '10px',
-                width: '100%',
-                'flex-wrap': 'wrap',
-              }}
-            >
+            <div style={{ display: 'flex', 'flex-direction': 'row', padding: '10px', width: '100%', 'flex-wrap': 'wrap' }}>
               <For each={[...starterPrompts()]}>{(key) => <StarterPromptBubble prompt={key} onPromptClick={() => promptClick(key)} />}</For>
             </div>
           </Show>
