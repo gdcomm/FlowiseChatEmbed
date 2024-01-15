@@ -144,11 +144,11 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
-    let translatedQuestion = '';
-    if (detectKorean(value)) {
-      setIsKorean(true);
-      translatedQuestion = await translateEng(value);
-    }
+    // let translatedQuestion = '';
+    // if (detectKorean(value)) {
+    //   setIsKorean(true);
+    //   translatedQuestion = await translateEng(value);
+    // }
 
     // Send user question and history to API
     const welcomeMessage = props.welcomeMessage ?? defaultWelcomeMessage;
@@ -162,7 +162,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     // 질문은 영어로 한다.
     const body: IncomingInput = {
-      question: isKorean() ? translatedQuestion : value,
+      question: value,
       history: messageList,
       chatId: chatId(),
     };
@@ -185,7 +185,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        if (isKorean()) {
+        if (detectKorean(value)) {
           text = await translateKor(data.text);
         }
 
