@@ -1,9 +1,9 @@
 import axios from 'axios';
-import getApiKey from '@/api/cloud';
+import { getApiKey1, getApiKey2 } from '@/api/cloud';
 
 export async function translateKor(text: string): Promise<string> {
   const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
-  const { key } = await getApiKey();
+  const { key } = await getApiKey1();
 
   try {
     const response = await axios.post(
@@ -31,7 +31,7 @@ export async function translateKor(text: string): Promise<string> {
 
 export async function translateEng(text: string): Promise<string> {
   const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
-  const { key } = await getApiKey();
+  const { key } = await getApiKey2();
 
   try {
     const response = await axios.post(

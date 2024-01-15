@@ -187,20 +187,16 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        let translated = text;
-        if (isKorean()) {
-          translated = await translateKor(text);
-        }
-
-        setMessages((prevMessages) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setMessages(async (prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
             {
-              message: translated,
+              message: isKorean() ? await translateKor(text) : text,
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
-              test: translated,
             },
           ];
           addChatMessage(messages);
