@@ -180,22 +180,22 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (result.data) {
       const data = result.data;
 
-      if (isKorean()) {
-        data.text = await translateKor(data.text);
-        console.log('dta : ' + data.text);
-      }
-
       if (!isChatFlowAvailableToStream()) {
         let text = '';
         if (data.text) text = data.text;
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
+        let translated = '';
+        if(isKorean()) {
+          translated = await translateKor(text)
+        }
+
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
             {
-              message: text,
+              message: translated,
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
