@@ -179,8 +179,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     if (result.data) {
       const data = result.data;
-      if(isKorean()) {
-        data.text = await translateKor(data.text)
+      if (isKorean()) {
+        data.text = await translateKor(data.text);
       }
 
       if (!isChatFlowAvailableToStream()) {
