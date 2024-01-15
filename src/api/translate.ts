@@ -3,7 +3,7 @@ import getApiKey from '@/api/cloud';
 
 async function translateWithGPT3(from: string, to: string, text: string): Promise<string> {
   const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
-  const { key } = await getApiKey()
+  const { key } = await getApiKey();
 
   try {
     const response = await axios.post(
@@ -30,5 +30,3 @@ async function translateWithGPT3(from: string, to: string, text: string): Promis
 }
 
 export default translateWithGPT3;
-
-

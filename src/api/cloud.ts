@@ -11,4 +11,4 @@ async function getApiKey() {
   }
 }
 
-export default getApiKey
+export default getApiKey;
