@@ -216,8 +216,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
             return messages;
           });
         }
-
-
       }
       setLoading(false);
       setUserInput('');
