@@ -13,7 +13,7 @@ import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
 import { DeleteButton } from '@/components/SendButton';
 import { detectKorean } from '@/utils/detectLanguage';
-import translateWithGPT3 from '@/api/translate';
+import { translateEng, translateKor } from '@/api/translate';
 
 type messageType = 'apiMessage' | 'userMessage' | 'usermessagewaiting';
 
@@ -144,10 +144,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
-    let translatedQuestion = ''
+    let translatedQuestion = '';
     if (detectKorean(value)) {
       setIsKorean(true);
-      translatedQuestion = await translateWithGPT3('Korean', 'English', value)
+      translatedQuestion = await translateEng(value);
     }
 
     // Send user question and history to API
@@ -185,9 +185,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        let translatedAnswer: string
+        let translatedAnswer: string;
         if (isKorean()) {
-          translatedAnswer = await translateWithGPT3('English', 'Korean', text)
+          translatedAnswer = await translateKor(data.text);
         }
 
         setMessages((prevMessages) => {
