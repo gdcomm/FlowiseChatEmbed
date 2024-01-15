@@ -9,7 +9,7 @@ export async function translateKor(text: string): Promise<string> {
     const response = await axios.post(
       apiUrl,
       {
-        prompt: `Must Translate the following text to Korean: ${text}`,
+        prompt: `Translate the following text to Korean: ${text}`,
         temperature: 0.7,
         max_tokens: 999,
       },
@@ -37,7 +37,7 @@ export async function translateEng(text: string): Promise<string> {
     const response = await axios.post(
       apiUrl,
       {
-        prompt: `Must Translate the following text to English: ${text}`,
+        prompt: `Translate the following text to English: ${text}`,
         temperature: 0.7,
         max_tokens: 999,
       },
