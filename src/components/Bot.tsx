@@ -121,7 +121,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   // Handle errors
   const handleError = (message = isKorean() ? '잠시 후 다시 시도 해주시기 바랍니다.' : 'Oops! There seems to be an error. Please try again.') => {
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message, type: 'apiMessage' }];
+      const messages: MessageType[] = [...prevMessages, { message, type: 'apiMessage', test: '1' }];
       addChatMessage(messages);
       return messages;
     });
@@ -187,16 +187,15 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        setMessages(async (prevMessages) => {
+        setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
             {
-              message: isKorean() ? await translateKor(text) : text,
+              message: text,
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
+              test: '2',
             },
           ];
           addChatMessage(messages);
@@ -225,6 +224,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         {
           message: props.welcomeMessage ?? defaultWelcomeMessage,
           type: 'apiMessage',
+          test: '3',
         },
       ]);
     } catch (error: any) {
@@ -294,7 +294,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     });
 
     socket.on('start', () => {
-      setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
+      setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage', test: '4' }]);
     });
 
     socket.on('sourceDocuments', updateLastMessageSourceDocuments);
@@ -309,6 +309,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         {
           message: props.welcomeMessage ?? defaultWelcomeMessage,
           type: 'apiMessage',
+          test: '5',
         },
       ]);
       if (socket) {
