@@ -55,7 +55,6 @@ const configs = [
       file: 'dist/web.js',
       format: 'es',
     },
-    external: ['pg'],
   },
 ];
 
