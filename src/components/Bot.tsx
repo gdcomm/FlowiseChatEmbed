@@ -70,8 +70,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [chatId, setChatId] = createSignal(uuidv4());
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
   const [isKorean, setIsKorean] = createSignal(false);
-  const [translatedQuestion, setTranslatedQuestion] = createSignal('')
-  const [translatedAnswer, setTranslatedAnswer] = createSignal('')
+  const [translatedQuestion, setTranslatedQuestion] = createSignal('');
+  const [translatedAnswer, setTranslatedAnswer] = createSignal('');
 
   onMount(() => {
     if (!bottomSpacer) return;
@@ -148,7 +148,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     if (detectKorean(value)) {
       setIsKorean(true);
-      setTranslatedQuestion(await translateWithGPT3('Korean', 'English', value))
+      setTranslatedQuestion(await translateWithGPT3('Korean', 'English', value));
     }
 
     // Send user question and history to API
@@ -156,13 +156,13 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     const messageList = messages().filter((msg) => msg.message !== welcomeMessage);
 
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage'}];
+      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage' }];
       addChatMessage(messages);
       return messages;
     });
 
     const body: IncomingInput = {
-      question: value,
+      question: isKorean() ? translatedQuestion() : value,
       history: messageList,
       chatId: chatId(),
     };
@@ -186,13 +186,18 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else text = JSON.stringify(data, null, 2);
 
         if (isKorean()) {
-          setTranslatedAnswer(await translateWithGPT3('English', 'Korean', text))
+          setTranslatedAnswer(await translateWithGPT3('English', 'Korean', text));
         }
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
-            { message: isKorean() ? translatedAnswer() : text, sourceDocuments: data?.sourceDocuments, fileAnnotations: data?.fileAnnotations, type: 'apiMessage' },
+            {
+              message: isKorean() ? translatedAnswer() : text,
+              sourceDocuments: data?.sourceDocuments,
+              fileAnnotations: data?.fileAnnotations,
+              type: 'apiMessage',
+            },
           ];
           addChatMessage(messages);
           return messages;
