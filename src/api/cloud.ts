@@ -21,5 +21,3 @@ export async function getApiKey2() {
     throw error;
   }
 }
-
-
