@@ -6,6 +6,7 @@ export type MessageType = {
     sourceDocuments?: any;
     fileAnnotations?: any;
     test?: string;
+    check?: string;
 };
 export type BotProps = {
     chatflowid: string;
