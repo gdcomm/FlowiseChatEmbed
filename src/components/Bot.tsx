@@ -22,6 +22,7 @@ export type MessageType = {
   type: messageType;
   sourceDocuments?: any;
   fileAnnotations?: any;
+  test?: string;
 };
 
 export type BotProps = {
@@ -186,7 +187,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        let translated = '';
+        let translated = text;
         if (isKorean()) {
           translated = await translateKor(text);
         }
@@ -199,6 +200,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
+              test: translated,
             },
           ];
           addChatMessage(messages);
