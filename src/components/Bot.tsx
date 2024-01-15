@@ -70,8 +70,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [chatId, setChatId] = createSignal(uuidv4());
   const [starterPrompts, setStarterPrompts] = createSignal<string[]>([], { equals: false });
   const [isKorean, setIsKorean] = createSignal(false);
-  const [translatedQuestion, setTranslatedQuestion] = createSignal('');
-  const [translatedAnswer, setTranslatedAnswer] = createSignal('');
 
   onMount(() => {
     if (!bottomSpacer) return;
@@ -146,9 +144,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
+    let translatedQuestion = ''
     if (detectKorean(value)) {
       setIsKorean(true);
-      setTranslatedQuestion(await translateWithGPT3('Korean', 'English', value));
+      translatedQuestion = await translateWithGPT3('Korean', 'English', value)
     }
 
     // Send user question and history to API
@@ -161,8 +160,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       return messages;
     });
 
+    // 질문은 영어로 한다.
     const body: IncomingInput = {
-      question: isKorean() ? translatedQuestion() : value,
+      question: isKorean() ? translatedQuestion : value,
       history: messageList,
       chatId: chatId(),
     };
@@ -185,15 +185,16 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
+        let translatedAnswer: string
         if (isKorean()) {
-          setTranslatedAnswer(await translateWithGPT3('English', 'Korean', text));
+          translatedAnswer = await translateWithGPT3('English', 'Korean', text)
         }
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
             {
-              message: isKorean() ? translatedAnswer() : text,
+              message: isKorean() ? translatedAnswer : text,
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
