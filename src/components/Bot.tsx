@@ -187,22 +187,37 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else text = JSON.stringify(data, null, 2);
 
         if (isKorean()) {
-          text = await translateKor(data.text);
+          const translated = await translateKor(text);
+          setMessages((prevMessages) => {
+            const messages: MessageType[] = [
+              ...prevMessages,
+              {
+                message: translated,
+                sourceDocuments: data?.sourceDocuments,
+                fileAnnotations: data?.fileAnnotations,
+                type: 'apiMessage',
+              },
+            ];
+            addChatMessage(messages);
+            return messages;
+          });
+        } else {
+          setMessages((prevMessages) => {
+            const messages: MessageType[] = [
+              ...prevMessages,
+              {
+                message: text,
+                sourceDocuments: data?.sourceDocuments,
+                fileAnnotations: data?.fileAnnotations,
+                type: 'apiMessage',
+              },
+            ];
+            addChatMessage(messages);
+            return messages;
+          });
         }
 
-        setMessages((prevMessages) => {
-          const messages: MessageType[] = [
-            ...prevMessages,
-            {
-              message: text,
-              sourceDocuments: data?.sourceDocuments,
-              fileAnnotations: data?.fileAnnotations,
-              type: 'apiMessage',
-            },
-          ];
-          addChatMessage(messages);
-          return messages;
-        });
+
       }
       setLoading(false);
       setUserInput('');
@@ -377,8 +392,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                       avatarSrc={props.botMessage?.avatarSrc}
                     />
                   )}
-                  {message.type === 'userMessage' && loading() && index() === messages().length - 1 &&
-                    <LoadingBubble />}
+                  {message.type === 'userMessage' && loading() && index() === messages().length - 1 && <LoadingBubble />}
                   {message.sourceDocuments && message.sourceDocuments.length && (
                     <div style={{ display: 'flex', 'flex-direction': 'row', width: '100%' }}>
                       <For each={[...removeDuplicateURL(message)]}>
@@ -457,17 +471,14 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         </div>
         <Show when={messages().length === 1}>
           <Show when={starterPrompts().length > 0}>
-            <div
-              style={{ display: 'flex', 'flex-direction': 'row', padding: '10px', width: '100%', 'flex-wrap': 'wrap' }}>
-              <For each={[...starterPrompts()]}>{(key) => <StarterPromptBubble prompt={key}
-                                                                               onPromptClick={() => promptClick(key)} />}</For>
+            <div style={{ display: 'flex', 'flex-direction': 'row', padding: '10px', width: '100%', 'flex-wrap': 'wrap' }}>
+              <For each={[...starterPrompts()]}>{(key) => <StarterPromptBubble prompt={key} onPromptClick={() => promptClick(key)} />}</For>
             </div>
           </Show>
         </Show>
         <BottomSpacer ref={bottomSpacer} />
       </div>
-      {sourcePopupOpen() &&
-        <Popup isOpen={sourcePopupOpen()} value={sourcePopupSrc()} onClose={() => setSourcePopupOpen(false)} />}
+      {sourcePopupOpen() && <Popup isOpen={sourcePopupOpen()} value={sourcePopupSrc()} onClose={() => setSourcePopupOpen(false)} />}
     </>
   );
 };
