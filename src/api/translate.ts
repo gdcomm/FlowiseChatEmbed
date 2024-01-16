@@ -30,7 +30,7 @@ export async function translateKor(text: string): Promise<string> {
 }
 
 export async function translateEng(text: string): Promise<string> {
-  const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions';
+  const apiUrl = 'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct-0914/completions';
   const { key } = await getApiKey2();
 
   try {

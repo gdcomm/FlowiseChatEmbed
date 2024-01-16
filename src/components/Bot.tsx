@@ -196,7 +196,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
               sourceDocuments: data?.sourceDocuments,
               fileAnnotations: data?.fileAnnotations,
               type: 'apiMessage',
-              test: '1',
             },
           ];
           addChatMessage(messages);
@@ -294,7 +293,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     });
 
     socket.on('start', () => {
-      setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage', check: '1' }]);
+      setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
     });
 
     socket.on('sourceDocuments', updateLastMessageSourceDocuments);
