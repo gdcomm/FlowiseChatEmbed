@@ -188,6 +188,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
+        if(isKorean()) {
+          text = await translateKor(text)
+        }
+
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
