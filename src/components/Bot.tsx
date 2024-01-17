@@ -13,7 +13,7 @@ import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
 import { DeleteButton } from '@/components/SendButton';
 import { detectKorean } from '@/utils/detectLanguage';
-import { translateEng, translateKor } from '@/api/translate';
+import { translateWithGPT3 } from '@/api/translate';
 
 type messageType = 'apiMessage' | 'userMessage' | 'usermessagewaiting';
 
@@ -146,23 +146,22 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setLoading(true);
     scrollToBottom();
 
-    // let translatedQuestion = '';
-    // if (detectKorean(value)) {
-    //   setIsKorean(true);
-    //   translatedQuestion = await translateEng(value);
-    // }
+    let translatedQuestion = '';
+    if (detectKorean(value)) {
+      setIsKorean(true);
+      translatedQuestion = await translateWithGPT3('Korean', 'English', value);
+    }
 
     // Send user question and history to API
     const welcomeMessage = props.welcomeMessage ?? defaultWelcomeMessage;
     const messageList = messages().filter((msg) => msg.message !== welcomeMessage);
 
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage' }];
+      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage', test: translatedQuestion }];
       addChatMessage(messages);
       return messages;
     });
 
-    // 질문은 영어로 한다.
     const body: IncomingInput = {
       question: value,
       history: messageList,
@@ -187,10 +186,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         if (data.text) text = data.text;
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
-
-        if (detectKorean(value)) {
-          text = await translateKor(text);
-        }
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
@@ -295,6 +290,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     socket.on('connect', () => {
       setSocketIOClientId(socket.id);
     });
+
+    console.log(JSON.stringify(messages()))
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
