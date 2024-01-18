@@ -191,6 +191,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
+        console.log('inner data  : ' + JSON.stringify(data.text))
+        console.log('inner trans : ' + (await translateWithGPT3('English', 'Korean', data.text)))
+
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
