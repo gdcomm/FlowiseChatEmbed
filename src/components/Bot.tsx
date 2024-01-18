@@ -168,6 +168,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     };
 
     console.log('body: ' + JSON.stringify(body));
+    console.log('check isKorean : ' + isKorean())
 
     if (props.chatflowConfig) body.overrideConfig = props.chatflowConfig;
 
@@ -311,7 +312,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     });
 
     console.log('last : ' + JSON.stringify(messages()));
-    console.log('isKorean : ' + isKorean());
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
@@ -319,6 +319,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     socket.on('sourceDocuments', updateLastMessageSourceDocuments);
 
+    console.log('isKorean : ' + isKorean());
     socket.on('token', updateLastMessage);
 
     // eslint-disable-next-line solid/reactivity
