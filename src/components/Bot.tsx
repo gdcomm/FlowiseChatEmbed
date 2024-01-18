@@ -310,7 +310,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setSocketIOClientId(socket.id);
     });
 
-    console.log('start branch: ' + JSON.stringify(messages()));
+    console.log('final branch: ' + JSON.stringify(messages()));
 
     // eslint-disable-next-line solid/reactivity
     socket.on('start', () => {
