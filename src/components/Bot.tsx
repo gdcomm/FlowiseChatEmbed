@@ -183,7 +183,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (result.data) {
       const data = result.data;
 
-      data.text = isKorean() ? await translateWithGPT3('English', 'Korean', data.text) : data.text
+      data.text = isKorean() ? await translateWithGPT3('English', 'Korean', data.text) : data.text;
       console.log('translatedData : ' + JSON.stringify(data));
 
       if (!isChatFlowAvailableToStream()) {
@@ -192,7 +192,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
 
-        console.log('여길 타지않음.')
+        console.log('여길 타지않음.');
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
