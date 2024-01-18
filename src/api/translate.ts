@@ -21,7 +21,7 @@ export async function translateWithGPT3(from: string, to: string, text: string):
       },
     );
 
-    const translatedText = response.data.choices[0]?.text.trim();
+    const translatedText = response.data.choices[0]?.text.trim().replace(/^"|"$/g, '');
     return translatedText || '번역이 제대로 되지 않았습니다.';
   } catch (e) {
     console.error(e);
