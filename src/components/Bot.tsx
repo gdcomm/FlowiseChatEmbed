@@ -94,7 +94,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessage = (text: string) => {
-    console.log('updateLast : ' + text)
+    console.log('updateLast : ' + text);
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
@@ -108,7 +108,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessageSourceDocuments = (sourceDocuments: any) => {
-    console.log('sourceDocs : '+ JSON.stringify(sourceDocuments))
+    console.log('sourceDocs : ' + JSON.stringify(sourceDocuments));
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
