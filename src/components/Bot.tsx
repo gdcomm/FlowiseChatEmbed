@@ -311,7 +311,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     });
 
     console.log('korean : ' + JSON.stringify(messages()));
-    console.log('isKorean : ' + isKorean())
+    console.log('isKorean : ' + isKorean());
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
