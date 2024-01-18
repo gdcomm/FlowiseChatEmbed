@@ -314,7 +314,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setSocketIOClientId(socket.id);
     });
 
-    console.log('inner branch: ' + JSON.stringify(messages()));
+    console.log('update branch: ' + JSON.stringify(messages()));
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
