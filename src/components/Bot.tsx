@@ -168,7 +168,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       chatId: chatId(),
     };
 
-    console.log('body: ' + JSON.stringify(body))
+    console.log('body: ' + JSON.stringify(body));
 
     if (props.chatflowConfig) body.overrideConfig = props.chatflowConfig;
 
@@ -190,8 +190,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         else text = JSON.stringify(data, null, 2);
 
         let test = '';
-        test = await translateWithGPT3('English', 'Korean', text)
-        console.log('result : ' + test)
+        test = await translateWithGPT3('English', 'Korean', text);
+        console.log('result : ' + test);
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
