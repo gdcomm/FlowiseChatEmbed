@@ -22,8 +22,6 @@ export type MessageType = {
   type: messageType;
   sourceDocuments?: any;
   fileAnnotations?: any;
-  test?: string;
-  check?: string;
 };
 
 export type BotProps = {
@@ -159,7 +157,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     const messageList = messages().filter((msg) => msg.message !== welcomeMessage);
 
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage', test: translatedQuestion }];
+      const messages: MessageType[] = [...prevMessages, { message: value, type: 'userMessage' }];
       addChatMessage(messages);
       return messages;
     });
@@ -185,8 +183,23 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (result.data) {
       const data = result.data;
 
-      data.text = isKorean() ? await translateWithGPT3('English', 'Korean', data.text) : data.text;
-      console.log('translatedData : ' + JSON.stringify(data));
+      if(isKorean()) {
+        data.text = await translateWithGPT3('English', 'Korean', data.text)
+        console.log('Korean Text : ' + JSON.stringify(data))
+        setMessages((prevMessages) => {
+          const messages: MessageType[] = [
+            ...prevMessages,
+            {
+              message: data.text,
+              sourceDocuments: data?.sourceDocuments,
+              fileAnnotations: data?.fileAnnotations,
+              type: 'apiMessage',
+            },
+          ];
+          addChatMessage(messages);
+          return messages;
+        })
+      }
 
       console.log('stream : ' + !isChatFlowAvailableToStream()); //false
       if (!isChatFlowAvailableToStream()) {
