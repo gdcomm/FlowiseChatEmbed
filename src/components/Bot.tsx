@@ -299,7 +299,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         setStarterPrompts(prompts);
       }
     }
-    console.log('Cur Branch : modify')
+    console.log('Cur Branch : modify');
     const socket = socketIOClient(props.apiHost as string);
 
     socket.on('connect', () => {
