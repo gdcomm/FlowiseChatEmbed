@@ -92,8 +92,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessage = (text: string) => {
-    console.log('updateLast : ' + text);
-    console.log('updateLast inner isKorean : ' + isKorean());
+    if(isKorean()) {
+      console.log('update하지않음.')
+      return
+    }
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
