@@ -166,9 +166,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       chatId: chatId(),
     };
 
-    console.log('body: ' + JSON.stringify(body));
-    console.log('check isKorean : ' + isKorean());
-
     if (props.chatflowConfig) body.overrideConfig = props.chatflowConfig;
 
     if (isChatFlowAvailableToStream()) body.socketIOClientId = socketIOClientId();
@@ -184,7 +181,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
       if (isKorean()) {
         data.text = await translateWithGPT3('English', 'Korean', data.text);
-        console.log('Korean Text : ' + JSON.stringify(data));
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
@@ -309,8 +305,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     socket.on('connect', () => {
       setSocketIOClientId(socket.id);
     });
-
-    console.log('final branch: ' + JSON.stringify(messages()));
 
     // eslint-disable-next-line solid/reactivity
     socket.on('start', () => {
