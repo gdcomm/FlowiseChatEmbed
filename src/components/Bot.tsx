@@ -299,7 +299,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setSocketIOClientId(socket.id);
     });
 
-    console.log('chat : ' + JSON.stringify(messages()));
+    console.log('flow : ' + JSON.stringify(messages()));
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
