@@ -183,9 +183,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (result.data) {
       const data = result.data;
 
-      if(isKorean()) {
-        data.text = await translateWithGPT3('English', 'Korean', data.text)
-        console.log('Korean Text : ' + JSON.stringify(data))
+      if (isKorean()) {
+        data.text = await translateWithGPT3('English', 'Korean', data.text);
+        console.log('Korean Text : ' + JSON.stringify(data));
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
             ...prevMessages,
@@ -198,7 +198,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           ];
           addChatMessage(messages);
           return messages;
-        })
+        });
       }
 
       console.log('stream : ' + !isChatFlowAvailableToStream()); //false
