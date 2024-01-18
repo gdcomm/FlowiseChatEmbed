@@ -182,16 +182,14 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     if (result.data) {
       const data = result.data;
+      console.log('data : ' + JSON.stringify(data))
+      console.log('trans : ' + await translateWithGPT3('English', 'Korean', data.text))
 
       if (!isChatFlowAvailableToStream()) {
         let text = '';
         if (data.text) text = data.text;
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
-
-        let test = '';
-        test = await translateWithGPT3('English', 'Korean', text);
-        console.log('result : ' + test);
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
@@ -297,7 +295,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setSocketIOClientId(socket.id);
     });
 
-    console.log(JSON.stringify(messages()));
+    console.log('main : ' + JSON.stringify(messages()));
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
