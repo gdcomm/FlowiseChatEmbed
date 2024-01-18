@@ -322,7 +322,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     // eslint-disable-next-line solid/reactivity
     socket.on('token', (token: string) => {
-      console.log('socket inner : ' + isKorean())
+      console.log('socket inner : ' + isKorean());
       if (isKorean()) return;
       updateLastMessage(token);
     });
@@ -402,8 +402,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                       avatarSrc={props.botMessage?.avatarSrc}
                     />
                   )}
-                  {message.type === 'userMessage' && loading() && index() === messages().length - 1 &&
-                    <LoadingBubble />}
+                  {message.type === 'userMessage' && loading() && index() === messages().length - 1 && <LoadingBubble />}
                   {message.sourceDocuments && message.sourceDocuments.length && (
                     <div style={{ display: 'flex', 'flex-direction': 'row', width: '100%' }}>
                       <For each={[...removeDuplicateURL(message)]}>
@@ -482,17 +481,14 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         </div>
         <Show when={messages().length === 1}>
           <Show when={starterPrompts().length > 0}>
-            <div
-              style={{ display: 'flex', 'flex-direction': 'row', padding: '10px', width: '100%', 'flex-wrap': 'wrap' }}>
-              <For each={[...starterPrompts()]}>{(key) => <StarterPromptBubble prompt={key}
-                                                                               onPromptClick={() => promptClick(key)} />}</For>
+            <div style={{ display: 'flex', 'flex-direction': 'row', padding: '10px', width: '100%', 'flex-wrap': 'wrap' }}>
+              <For each={[...starterPrompts()]}>{(key) => <StarterPromptBubble prompt={key} onPromptClick={() => promptClick(key)} />}</For>
             </div>
           </Show>
         </Show>
         <BottomSpacer ref={bottomSpacer} />
       </div>
-      {sourcePopupOpen() &&
-        <Popup isOpen={sourcePopupOpen()} value={sourcePopupSrc()} onClose={() => setSourcePopupOpen(false)} />}
+      {sourcePopupOpen() && <Popup isOpen={sourcePopupOpen()} value={sourcePopupSrc()} onClose={() => setSourcePopupOpen(false)} />}
     </>
   );
 };
