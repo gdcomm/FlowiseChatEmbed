@@ -94,6 +94,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessage = (text: string) => {
+    console.log('updateLast : ' + text)
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
@@ -107,6 +108,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessageSourceDocuments = (sourceDocuments: any) => {
+    console.log('sourceDocs : '+ JSON.stringify(sourceDocuments))
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
@@ -185,15 +187,13 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
       data.text = isKorean() ? await translateWithGPT3('English', 'Korean', data.text) : data.text;
       console.log('translatedData : ' + JSON.stringify(data));
-      console.log('stream : ' + !isChatFlowAvailableToStream());
 
+      console.log('stream : ' + !isChatFlowAvailableToStream()); //false
       if (!isChatFlowAvailableToStream()) {
         let text = '';
         if (data.text) text = data.text;
         else if (data.json) text = JSON.stringify(data.json, null, 2);
         else text = JSON.stringify(data, null, 2);
-
-        console.log('여길 타지않음.');
 
         setMessages((prevMessages) => {
           const messages: MessageType[] = [
