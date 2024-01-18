@@ -313,6 +313,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     console.log('socket branch: ' + JSON.stringify(messages()));
 
     socket.on('start', () => {
+      console.log('start check')
+      console.log('start isKorean : ' + isKorean())
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
     });
 
@@ -322,7 +324,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     // eslint-disable-next-line solid/reactivity
     socket.on('token', (token: string) => {
-      console.log('socket inner : ' + isKorean());
       if (isKorean()) return;
       updateLastMessage(token);
     });
