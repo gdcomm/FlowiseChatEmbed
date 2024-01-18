@@ -93,6 +93,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   const updateLastMessage = (text: string) => {
     console.log('updateLast : ' + text);
+    console.log('updateLast inner isKorean : ' + isKorean())
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
@@ -319,7 +320,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
     socket.on('sourceDocuments', updateLastMessageSourceDocuments);
 
-    console.log('isKorean : ' + isKorean());
     socket.on('token', updateLastMessage);
 
     // eslint-disable-next-line solid/reactivity
