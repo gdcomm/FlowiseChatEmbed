@@ -106,7 +106,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const updateLastMessageSourceDocuments = (sourceDocuments: any) => {
-    console.log('sourceDocs : ' + JSON.stringify(sourceDocuments));
     setMessages((data) => {
       const updated = data.map((item, i) => {
         if (i === data.length - 1) {
@@ -201,7 +200,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         });
       }
 
-      console.log('stream : ' + !isChatFlowAvailableToStream()); //false
       if (!isChatFlowAvailableToStream()) {
         let text = '';
         if (data.text) text = data.text;
@@ -313,6 +311,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     });
 
     console.log('korean : ' + JSON.stringify(messages()));
+    console.log('isKorean : ' + isKorean())
 
     socket.on('start', () => {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
