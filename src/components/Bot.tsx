@@ -185,7 +185,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
       data.text = isKorean() ? await translateWithGPT3('English', 'Korean', data.text) : data.text;
       console.log('translatedData : ' + JSON.stringify(data));
-      console.log('stream : ' + !isChatFlowAvailableToStream())
+      console.log('stream : ' + !isChatFlowAvailableToStream());
 
       if (!isChatFlowAvailableToStream()) {
         let text = '';
