@@ -310,7 +310,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       setSocketIOClientId(socket.id);
     });
 
-    console.log('korean : ' + JSON.stringify(messages()));
+    console.log('last : ' + JSON.stringify(messages()));
     console.log('isKorean : ' + isKorean());
 
     socket.on('start', () => {
