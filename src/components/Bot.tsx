@@ -168,7 +168,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     };
 
     console.log('body: ' + JSON.stringify(body));
-    console.log('check isKorean : ' + isKorean())
+    console.log('check isKorean : ' + isKorean());
 
     if (props.chatflowConfig) body.overrideConfig = props.chatflowConfig;
 
